@@ -1,12 +1,10 @@
 #!/bin/bash
 # ========================================================================
-# Zephyr Development Container Entrypoint
-# Mirrors ROS 2 Jazzy environment style
+# Teensy-Flight-Controller Zephyr Development Container Entrypoint
 # ========================================================================
 
 set -e
 
-# Environment setup
 export ZEPHYR_TOOLCHAIN_VARIANT=${ZEPHYR_TOOLCHAIN_VARIANT:-zephyr}
 export ZEPHYR_SDK_INSTALL_DIR=${ZEPHYR_SDK_INSTALL_DIR:-/home/jmendes/zephyr-sdk}
 export PATH=$ZEPHYR_SDK_INSTALL_DIR/arm-zephyr-eabi/bin:$HOME/.local/bin:$PATH

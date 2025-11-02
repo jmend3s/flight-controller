@@ -1,13 +1,9 @@
 # ========================================================================
-# ZEPHYR DEVELOPMENT ENVIRONMENT (Teensy / ARM Boards)
+# ZEPHYR DEVELOPMENT ENVIRONMENT
 # ========================================================================
 
 FROM ubuntu:24.04
 
-# ------------------------------------------------------------------------
-# System setup
-# ------------------------------------------------------------------------
-ARG DEBIAN_FRONTEND=noninteractive
 ARG USERNAME=jmendes
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
@@ -19,9 +15,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     udev minicom usbutils curl unzip gdb \
   && rm -rf /var/lib/apt/lists/*
 
-# ------------------------------------------------------------------------
-# Create user with matching UID/GID (portable dev environment)
-# ------------------------------------------------------------------------
 RUN if getent passwd $USER_UID >/dev/null; then \
       userdel -r -f $(getent passwd $USER_UID | cut -d: -f1); \
     fi && \
@@ -32,18 +25,12 @@ RUN if getent passwd $USER_UID >/dev/null; then \
     useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME && \
     mkdir -p /home/$USERNAME/.config && chown $USER_UID:$USER_GID /home/$USERNAME/.config
 
-# ------------------------------------------------------------------------
-# Give user passwordless sudo (useful for debugging)
-# ------------------------------------------------------------------------
 RUN apt-get update \
   && apt-get install -y sudo \
   && echo "$USERNAME ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
   && chmod 0440 /etc/sudoers.d/$USERNAME \
   && rm -rf /var/lib/apt/lists/*
 
-# ------------------------------------------------------------------------
-# Install Zephyr SDK 0.17.4
-# ------------------------------------------------------------------------
 USER $USERNAME
 WORKDIR /home/$USERNAME
 
@@ -53,34 +40,19 @@ RUN wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.17.4/
     mv zephyr-sdk-0.17.4 zephyr-sdk && \
     yes | /home/$USERNAME/zephyr-sdk/setup.sh -t arm-zephyr-eabi
 
-# ------------------------------------------------------------------------
-# Install West and Python dependencies
-# ------------------------------------------------------------------------
 RUN pip install --break-system-packages --user west && \
     echo 'export PATH=$HOME/.local/bin:$PATH' >> ~/.bashrc
 
-# ------------------------------------------------------------------------
-# Environment variables
-# ------------------------------------------------------------------------
 ENV PATH="/home/$USERNAME/.local/bin:/home/$USERNAME/zephyr-sdk/arm-zephyr-eabi/bin:$PATH" \
     ZEPHYR_TOOLCHAIN_VARIANT=zephyr \
     ZEPHYR_SDK_INSTALL_DIR=/home/$USERNAME/zephyr-sdk
 
-# ------------------------------------------------------------------------
-# Initialize Zephyr workspace
-# ------------------------------------------------------------------------
 RUN mkdir -p ~/zephyrproject && cd ~/zephyrproject && \
     west init && west update && west zephyr-export
 
-# ------------------------------------------------------------------------
-# Entrypoint setup
-# ------------------------------------------------------------------------
 COPY entrypoint.sh /entrypoint.sh
 RUN sudo chmod +x /entrypoint.sh
 
-# ------------------------------------------------------------------------
-# Default workspace
-# ------------------------------------------------------------------------
 RUN mkdir -p /home/$USERNAME/$WORKDIR
 WORKDIR /home/$USERNAME/$WORKDIR
 

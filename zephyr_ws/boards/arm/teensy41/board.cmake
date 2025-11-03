@@ -1,0 +1,1 @@
+set(DTC_OVERLAY_FILE ${BOARD_DIR}/teensy41.overlay)

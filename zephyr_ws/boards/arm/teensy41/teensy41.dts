@@ -1,0 +1,18 @@
+/dts-v1/;
+/include/ "nxp/nxp_imx_rt1062.dtsi"
+
+/ {
+	model = "PJRC Teensy 4.1 Board";
+	compatible = "pjrc,teensy41";
+
+	chosen {
+		zephyr,console = &lpuart1;
+		zephyr,shell-uart = &lpuart1;
+		zephyr,flash = &flash0;
+	};
+};
+
+&lpuart1 {
+	status = "okay";
+	current-speed = <115200>;
+};

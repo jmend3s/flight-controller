@@ -3,6 +3,13 @@
 # Teensy-Flight-Controller Development Zephyr Docker Image Build Script
 # ========================================================================
 
+# This script opens a new terminal with two tabs for the container
+# It work's with terminator terminal and uses xdotool to manipulate terminal commands
+# If one of these tools is not installed just comment the last part of the script
+
+# sudo apt install terminator
+# sudo apt install xdotool
+
 set -e
 
 CONTAINER_NAME="flight_controller-zephyr-dev"
@@ -19,6 +26,7 @@ else
       --hostname $CONTAINER_NAME \
       --privileged \
       -v "$WORKSPACE_PATH":/home/$USER_NAME/$WORKSPACE_DIR \
+      -v /dev/bus/usb:/dev/bus/usb \
       --device=/dev/bus/usb \
       $IMAGE_NAME
 fi

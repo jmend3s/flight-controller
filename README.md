@@ -31,8 +31,31 @@ This project aims to develop a flexible flight controller with the following goa
 ```
 
 ---
+### Project Structure
+
+```
+docker/         # Dockerfile and helper scripts
+docs/           # Diagrams and documentation
+zephyr_ws/
+├── apps/       # Applications 
+├── boards/     # Teensy 4.1 configurations
+```
+
+---
+### Quick Start 
+
+ - Clone the repository ```git clone git@github.com:jmend3s/flight-controller.git``` <br>
+ - Go to project root ```cd flight-controller/```
+ - Build the docker image ```./docker/build.sh``` <br>
+ - Start container ```./docker/run.sh``` **refer to the documentation on the script to use without Terminator and xdotool** <br>
+ - **Inside the container** build and flash Teensy ```./build_flash.sh``` <br>
+ - Click the reset button on Teensy for bootloader mode <br>
+**Be sure to run all the Docker scripts on the project's root**
+
+---
 ### Current Status
 
+- [x] Set up Docker and Zephyr environments
 - [ ] Define base firmware architecture (drivers, services, application layers)
 - [ ] Implement IMU driver
 - [ ] Integrate NRF24L01 communication

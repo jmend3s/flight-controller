@@ -12,7 +12,7 @@ endif()
 list(APPEND CMAKE_PREFIX_PATH $ENV{ZEPHYR_BASE})
 
 set(APP_LIST
-  apps/blinky
+  apps/flight_controller
 )
 
 foreach(APP_PATH ${APP_LIST})

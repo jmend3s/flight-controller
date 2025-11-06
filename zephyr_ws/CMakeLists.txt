@@ -13,7 +13,7 @@ if(NOT DEFINED BOARD)
 endif()
 
 set(APP_LIST
-  apps/flight_controller
+  flight_controller
 )
 
 foreach(APP_PATH ${APP_LIST})

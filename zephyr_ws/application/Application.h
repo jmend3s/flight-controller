@@ -1,4 +1,3 @@
-
 #ifndef __APPLICATION_H__
 #define __APPLICATION_H__
 
@@ -6,21 +5,18 @@
 #include "Registry.h"
 
 
-namespace fc
+class Application
 {
-    class Application
-    {
-    public:
-        Application();
+public:
+    Application();
 
-        bool add(Component& component);
+    bool add(Component& component);
 
-        void initialize();
-        void run();
+    void initialize();
+    void run();
 
-    private:
-        Registry<8> _registry;
-    };
-}
+private:
+    Registry<8> _registry;
+};
 
 #endif

@@ -5,5 +5,5 @@
 
 APP=flight_controller
 
-west build -b teensy41 $APP -p
+west build -b teensy41 -S cdc-acm-console $APP -p
 sudo teensy_loader_cli -mmcu=TEENSY41 -w build/zephyr/zephyr.hex

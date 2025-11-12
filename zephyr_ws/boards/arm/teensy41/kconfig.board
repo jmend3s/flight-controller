@@ -1,5 +1,0 @@
-config BOARD_TEENSY41
-    bool "Teensy 4.1"
-    depends on SOC_MIMXRT1062
-    help
-      Enable support for the PJRC Teensy 4.1 development board.

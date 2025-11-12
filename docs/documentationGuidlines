@@ -1,0 +1,23 @@
+Layred architecture:
+Drivers - hardware abstraction layer (HAL)
+services - mid level logic (PID timming waveform)
+application - orchestration layer
+
+All of these are peers in the architecture, they all depend on the lower layers
+
+
+Architecural rules:
+
+Drivers never know abour services - keep dependencies upward only
+Services may depend on drivers - TimmingService uses Timer
+application depends on services - high level orchestration only 
+no stl or heap - everything static or stack-allocated
+Deterministic initialize() and update() - every component follows the same pattern
+
+
+Conceptual Ownership:
+
+core/ - Base interfaces and light weight utilities - no dependencies
+drivers/ - Hardware interfacing - depends on core
+services/ - combine multiple drivers, logic - depends on drivers and core
+app/ - System orchestration, flight modes - depends on services drivers and core

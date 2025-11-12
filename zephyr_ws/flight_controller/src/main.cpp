@@ -1,42 +1,30 @@
+#include <zephyr/kernel.h>
+#include <stdio.h>
+#include <zephyr/usb/usb_device.h>
+#include <zephyr/logging/log.h>
 
-#include "Application.h"
-#include "Gpio.h"
+LOG_MODULE_REGISTER(MyApp, LOG_LEVEL_INF);
 
-class LedBlinkService : public Component
-{
-public:
-    LedBlinkService(Gpio& led, uint32_t interval)
-        : led_(led), interval_(interval), counter_(0) {}
+#include <zephyr/drivers/gpio.h>
 
-    void initialize() override
-    {
-        led_.set(Gpio::State::Low);  // start off
-    }
-
-    void update() override
-    {
-        if (++counter_ >= interval_)
-        {
-            led_.toggle();
-            counter_ = 0;
-        }
-    }
-
-private:
-    Gpio& led_;
-    uint32_t interval_;
-    uint32_t counter_;
-};
-
-static Gpio led("GPIO_1", 13, Gpio::Direction::Output);
 extern "C" int main(void)
 {
-    static LedBlinkService blinker(led, 10);
+    printk("Starting application");
+    printk("Application started successfully!\n");
+    k_sleep(K_SECONDS(1));
 
-    static Application app;
-    app.add(led);
-    app.add(blinker);
+    printk("configuring pin\n");
+    k_sleep(K_SECONDS(2));
+    const struct device* dev = device_get_binding("GPIO_1");
+    printk("pin configured\n");
+    gpio_pin_configure(dev, 13, GPIO_OUTPUT);
 
-    app.initialize();
-    app.run();
+    k_sleep(K_SECONDS(5));
+
+    while (1)
+    {
+        printk("loop\n");
+        printk("Heartbeat: %s\n", dev->name);
+        k_sleep(K_SECONDS(1));
+    }
 }

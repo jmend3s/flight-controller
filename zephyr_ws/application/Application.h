@@ -13,7 +13,7 @@ public:
     bool add(Component& component);
 
     void initialize();
-    void run();
+    void update();
 
 private:
     Registry<8> _registry;

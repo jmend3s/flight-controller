@@ -18,8 +18,7 @@ void Application::initialize()
     _registry.initializeAll();
 }
 
-void Application::run()
+void Application::update()
 {
     _registry.updateAll();
-    k_msleep(100);
 }

@@ -46,9 +46,9 @@ void Registry<N>::initializeAll()
 template <size_t N>
 void Registry<N>::updateAll()
 {
-    for (auto& component : _components)
+    for (size_t i = 0; i < _size; i++)
     {
-        component->update();
+        _components[i]->update();
     }
 }
 

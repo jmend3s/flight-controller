@@ -12,8 +12,8 @@
 
 set -e
 
-CONTAINER_NAME="flight_controller-zephyr-dev"
 IMAGE_NAME="flight_controller-zephyr-dev"
+CONTAINER_NAME=$IMAGE_NAME
 WORKSPACE_DIR="zephyr_ws"
 WORKSPACE_PATH="$PWD/$WORKSPACE_DIR"
 USER_NAME="jmendes"

@@ -6,16 +6,15 @@
 
 set -e
 
-export ZEPHYR_TOOLCHAIN_VARIANT=${ZEPHYR_TOOLCHAIN_VARIANT:-gnuarmemb}
-export ZEPHYR_BASE=${ZEPHYR_BASE:-/home/jmendes/zephyrproject/zephyr}
-export GNUARMEMB_TOOLCHAIN_PATH=${GNUARMEMB_TOOLCHAIN_PATH:-/usr}
-export PATH=$HOME/.local/bin:/usr/bin:$PATH
+USER="jmendes"
+APP="flight_controller"
+APP_DIR="/home/$USER/zephyr_ws/$APP/"
+ZEPHYR_HEX="/home/$USER/zephyr_ws/build/zephyr/zephyr.hex"
 
-# If board definitions are in custom path
-export ZEPHYR_BOARD_ROOT=${ZEPHYR_BOARD_ROOT:-$HOME/zephyr_ws/boards}
-
-if [ -f "$ZEPHYR_BASE/zephyr-env.sh" ]; then
-    source "$ZEPHYR_BASE/zephyr-env.sh"
-fi
+{
+  echo "alias build=\"west build -b teensy41 -S cdc-acm-console $APP_DIR -p\""
+  echo "alias flash=\"sudo teensy_loader_cli -mmcu=TEENSY41 -w $ZEPHYR_HEX\""
+  echo "alias bf=\"build && flash\""
+} >> /home/$USER/.bashrc
 
 exec "$@"

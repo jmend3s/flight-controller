@@ -38,4 +38,6 @@ RUN mkdir -p ~/zephyrproject && cd ~/zephyrproject && \
 RUN mkdir -p /home/$USERNAME/$WORKDIR
 WORKDIR /home/$USERNAME/$WORKDIR
 
-ENTRYPOINT ["/bin/bash"]
+COPY entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+CMD ["bash"]

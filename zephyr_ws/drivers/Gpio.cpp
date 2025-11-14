@@ -1,41 +1,31 @@
 
 #include "Gpio.h"
 
-#include <zephyr/sys/printk.h>
 #include <zephyr/drivers/gpio.h>
+#include <zephyr/sys/printk.h>
 
 
-Gpio::Gpio(char const* deviceLabel, uint32_t pin, Direction direction, Pull pull)
-    : _device(nullptr)
-    , _deviceLabel(deviceLabel)
-    , _pin(pin)
-    , _direction(direction)
-    , _pull(pull)
+Gpio::Gpio(gpio_dt_spec const& spec, Mode mode)
+    : _spec(spec)
+    , _mode(mode)
     , _state(State::Low)
 {
 }
 
 void Gpio::initialize()
 {
-    _device = device_get_binding(_deviceLabel);
-    if (_device)
+    if (device_is_ready(_spec.port))
     {
-        uint32_t flags = 0;
-        flags |= _direction == Direction::Output ? GPIO_OUTPUT_INACTIVE : GPIO_INPUT;
-
-        if (_pull != Pull::None)
+        auto flags = _mode == Mode::Input ? GPIO_INPUT : GPIO_OUTPUT;
+        if (gpio_pin_configure_dt(&_spec, flags) != 0)
         {
-            flags |= _pull == Pull::Down ? GPIO_PULL_DOWN : GPIO_PULL_UP;
-        }
-
-        if (gpio_pin_configure(_device, _pin, flags) != 0)
-        {
-            printk("[Gpio] Failed to configure pin %d\n", static_cast<int>(_pin));
+            printk("[Gpio] Failed to configure %s pin %u\n",
+               _spec.port->name, _spec.pin);
         }
     }
     else
     {
-        printk("[Gpio] Cannot find device %s\n", _deviceLabel);
+        printk("[Gpio] Device not ready: %s\n", _spec.port->name);
     }
 }
 
@@ -45,29 +35,23 @@ void Gpio::update()
 
 void Gpio::set(State state)
 {
-    if (_device)
+    if (_mode == Mode::Output)
     {
         _state = state;
-        gpio_pin_set(_device, _pin, static_cast<bool>(state));
+        gpio_pin_set_dt(&_spec, (state == State::High) ? 1 : 0);
     }
 }
 
 void Gpio::toggle()
 {
-    if (_device)
+    if (_mode == Mode::Output)
     {
+        gpio_pin_toggle_dt(&_spec);
         _state = _state == State::Low ? State::High : State::Low;
-        gpio_pin_set(_device, _pin, static_cast<bool>(_state));
     }
 }
 
 Gpio::State Gpio::read() const
 {
-    auto state= State::Low;
-    if (_device)
-    {
-        state = gpio_pin_get(_device, _pin) ? State::High : State::Low;
-    }
-
-    return state;
+    return gpio_pin_get_dt(&_spec) ? State::High : State::Low;
 }

@@ -5,7 +5,6 @@
 
 #include <cstddef>
 
-
 template <size_t N>
 class Registry
 {
@@ -38,9 +37,9 @@ bool Registry<N>::add(Component& component)
 template <size_t N>
 void Registry<N>::initializeAll()
 {
-    for (auto& component : _components)
+    for (size_t i = 0; i < _size; i++)
     {
-        component->initialize();
+        _components[i]->initialize();
     }
 }
 

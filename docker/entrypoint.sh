@@ -15,6 +15,7 @@ ZEPHYR_HEX="/home/$USER/zephyr_ws/build/zephyr/zephyr.hex"
   echo "alias build=\"west build -b teensy41 -S cdc-acm-console $APP_DIR -p\""
   echo "alias flash=\"sudo teensy_loader_cli -mmcu=TEENSY41 -w $ZEPHYR_HEX\""
   echo "alias bf=\"build && flash\""
+  echo "alias monitor=\"sudo minicom -D /dev/ttyACM1 -b 115200\""
 } >> /home/$USER/.bashrc
 
 exec "$@"

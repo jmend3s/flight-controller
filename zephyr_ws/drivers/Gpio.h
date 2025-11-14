@@ -4,19 +4,16 @@
 
 #include "Component.h"
 
-#include <zephyr/device.h>
-
-#include <cstdint>
+#include <zephyr/drivers/gpio.h>
 
 
 class Gpio : public Component
 {
 public:
-    enum class Direction { Input, Output };
-    enum class Pull { None, Down, Up };
+    enum class Mode { Input, Output };
     enum class State { Low, High };
 
-    Gpio(char const* deviceLabel, uint32_t pin, Direction direction, Pull pull = Pull::None);
+    Gpio(gpio_dt_spec const& spec, Mode mode);
 
     void initialize() override;
     void update() override;
@@ -27,11 +24,8 @@ public:
     State read() const;
 
 private:
-    device const* _device;
-    char const* _deviceLabel;
-    uint32_t _pin;
-    Direction _direction;
-    Pull _pull;
+    gpio_dt_spec _spec;
+    Mode _mode;
     State _state;
 };
 

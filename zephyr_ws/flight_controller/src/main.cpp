@@ -1,23 +1,32 @@
+
+#include "Application.h"
+#include "Gpio.h"
+
 #include <zephyr/kernel.h>
-#include <stdio.h>
 #include <zephyr/usb/usb_device.h>
-#include <zephyr/logging/log.h>
 #include <zephyr/drivers/gpio.h>
 
-LOG_MODULE_REGISTER(MyApp, LOG_LEVEL_INF);
-
-#define LED_NODE DT_ALIAS(led0)
-static const gpio_dt_spec led_spec = GPIO_DT_SPEC_GET(LED_NODE, gpios);
 
 extern "C" int main(void)
 {
     printk("\n=== Teensy 4.1 DT-based LED Blink ===\n");
 
+    gpio_dt_spec constexpr ledSpec = GPIO_DT_SPEC_GET(DT_ALIAS(led0), gpios);
+    gpio_dt_spec constexpr externalLedSpec = GPIO_DT_SPEC_GET(DT_ALIAS(led1), gpios);
+
+    Gpio led(ledSpec, Gpio::Mode::Output);
+    Gpio externalLed(externalLedSpec, Gpio::Mode::Output);
+
+    Application application;
+
+    application.add(led);
+    application.add(externalLed);
+    application.initialize();
+
     while (true)
     {
-        printk("LED port: %s\n", led_spec.port->name);
-        printk("LED pin: %u\n", led_spec.pin);
-        printk("LED flags: 0x%x\n", led_spec.dt_flags);
-        k_msleep(500);
+        externalLed.toggle();
+        led.toggle();
+        k_msleep(1500);
     }
 }

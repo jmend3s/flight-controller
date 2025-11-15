@@ -12,8 +12,8 @@ class Timer : public Component
 public:
     Timer(uint32_t periodMs);
 
-    void initialize();
-    void update();
+    void initialize() override;
+    void update() override;
 
     bool elapsed() const;
     uint32_t period() const;

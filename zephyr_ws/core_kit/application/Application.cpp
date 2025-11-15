@@ -1,6 +1,5 @@
-#include "Application.h"
 
-#include <zephyr/kernel.h>
+#include "Application.h"
 
 
 Application::Application()

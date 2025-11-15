@@ -7,8 +7,7 @@
 set -e
 
 USER="jmendes"
-APP="flight_controller"
-APP_DIR="/home/$USER/zephyr_ws/$APP/"
+APP_DIR="/home/$USER/zephyr_ws/"
 ZEPHYR_HEX="/home/$USER/zephyr_ws/build/zephyr/zephyr.hex"
 
 {

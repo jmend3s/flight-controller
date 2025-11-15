@@ -32,5 +32,6 @@ extern "C" int main(void)
             externalLed.toggle();
             led.toggle();
         }
+        // k_sleep(K_SECONDS(1));
     }
 }

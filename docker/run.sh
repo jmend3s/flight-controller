@@ -37,3 +37,8 @@ xdotool key ctrl+shift+e
 sleep 0.1
 xdotool type "docker exec -it flight_controller-zephyr-dev bash -c 'cd /home/$USER_NAME/zephyr_ws; exec bash'"
 xdotool key Return
+
+xdotool key ctrl+shift+e
+sleep 0.1
+xdotool type "docker exec -it flight_controller-zephyr-dev bash -c 'cd /home/$USER_NAME/zephyr_ws; exec bash'"
+xdotool key Return

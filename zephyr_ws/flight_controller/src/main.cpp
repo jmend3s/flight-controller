@@ -1,37 +1,43 @@
 
-#include "Application.h"
-#include "Gpio.h"
-#include "Timer.h"
-
+#include <Pwm.h>
 #include <zephyr/kernel.h>
-#include <zephyr/usb/usb_device.h>
-#include <zephyr/drivers/gpio.h>
+#include <zephyr/logging/log.h>
+#include <zephyr/drivers/pwm.h>
+#include <zephyr/device.h>
 
+LOG_MODULE_REGISTER(pwm_example, LOG_LEVEL_INF);
 
-extern "C" int main(void)
+#define PWM_LED_NODE DT_ALIAS(pwm_led0)
+
+#if !DT_NODE_HAS_STATUS(PWM_LED_NODE, okay)
+#error "pwm_led0 alias is not defined or not okay in devicetree"
+#endif
+
+static const struct pwm_dt_spec pwmLedSpec = PWM_DT_SPEC_GET(PWM_LED_NODE);
+
+int main()
 {
-    printk("\n=== Teensy 4.1 DT-based LED Blink ===\n");
+    Pwm pwmLed(pwmLedSpec);
 
-    Gpio led(GPIO_DT_SPEC_GET(DT_ALIAS(led0), gpios), Gpio::Mode::Output);
-    Gpio externalLed(GPIO_DT_SPEC_GET(DT_ALIAS(led1), gpios), Gpio::Mode::Output);
-
-    Timer timer(2000);
-
-    Application application;
-
-    application.add(led);
-    application.add(externalLed);
-    application.add(timer);
-    application.initialize();
-
-    while (true)
+    if (pwmLed.initialize())
     {
-        application.update();
-        if (timer.elapsed())
+        uint32_t const period = pwmLed.periodNs();
+        uint32_t const step = period / 100U;
+
+        while (true)
         {
-            externalLed.toggle();
-            led.toggle();
+            for (uint32_t pulse = 0; pulse <= period; pulse += step)
+            {
+                pwmLed.setPulseNs(pulse);
+                k_msleep(20);
+            }
+
+            for (uint32_t pulse = period; pulse > 0; pulse -= step)
+            {
+                pwmLed.setPulseNs(pulse);
+                k_msleep(20);
+            }
         }
-        // k_sleep(K_SECONDS(1));
     }
+
 }

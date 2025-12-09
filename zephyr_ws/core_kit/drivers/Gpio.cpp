@@ -33,7 +33,7 @@ void Gpio::update()
 {
 }
 
-void Gpio::set(State state)
+void Gpio::set(State const state)
 {
     if (_mode == Mode::Output)
     {

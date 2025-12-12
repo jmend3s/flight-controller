@@ -1,11 +1,13 @@
 #!/bin/bash
+
 # ========================================================================
-# Teensy-Flight-Controller Docker Image Build Script
+# Flight-Controller Docker Image Build Script
 # ========================================================================
+
 
 set -e
 
-IMAGE_NAME="flight_controller-zephyr-dev"
+IMAGE_NAME="zephyr-dev"
 DOCKER_DIR="docker"
 
 docker build -t $IMAGE_NAME \

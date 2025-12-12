@@ -1,0 +1,71 @@
+👋 Here are 10 aerial robotics projects for beginners 👩‍💻👨‍💻
+(🚀 Full blog post with links to resources - https://lnkd.in/dwHpmQqM)
+
+ Are you intrigued by the world of Aerial Robotics and want to get started with aerial robotics projects? 🤔
+Look no further! Here's a list of 10 beginner-friendly projects to jumpstart your aerial robotics journey.
+
+🚀 1️⃣ Basic Drone Flight Control
+🚁 Project Statement: Implement basic flight control for a quadcopter.
+🛠️ Tools: ROS, Ardupilot
+📚 Concepts: Flight Dynamics, Control Systems
+Difficulty Level: ⭐
+
+2️⃣ Obstacle Avoidance in Drones
+🚧 Project Statement: Develop an obstacle avoidance system for drones using sensors.
+🛠️ Tools: ROS, LIDAR/Ultrasonic Sensors
+📚 Concepts: Perception, Obstacle Avoidance Difficulty Level: ⭐⭐
+
+3️⃣ Drone-based Object Tracking
+🎯 Project Statement: Create an object tracking system for a drone using computer vision.
+🛠️ Tools: ROS, OpenCV
+📚 Concepts: Computer Vision, Object Tracking
+Difficulty Level: ⭐⭐⭐
+
+4️⃣ Autonomous Drone Navigation
+🗺️ Project Statement: Implement autonomous navigation for drones in an indoor environment.
+🛠️ Tools: ROS, Rviz, Navigation Stack
+📚 Concepts: SLAM, Path Planning
+Difficulty Level: ⭐⭐
+
+5️⃣ Aerial Mapping and Surveying
+🌍 Project Statement: Create a 3D map of an environment using drone aerial imagery.
+🛠️ Tools: ROS, Gazebo
+📚 Concepts: Photogrammetry, Mapping
+Difficulty Level: ⭐⭐⭐
+
+6️⃣ Drone Teleoperation
+🕹️ Project Statement: Control a drone using a joystick or a game controller.
+🛠️ Tools: ROS, MAVROS
+📚 Concepts: Teleoperation, Human-Machine Interaction
+Difficulty Level: ⭐⭐
+
+7️⃣ Sensor Data Fusion for Drones
+🌡️ Project Statement: Combine data from multiple sensors on a drone to improve accuracy.
+🛠️ Tools: ROS, Various Sensors
+📚 Concepts: Sensor Fusion, Data Integration
+Difficulty Level: ⭐⭐⭐
+
+8️⃣ Drone Delivery System
+📦 Project Statement: Develop a basic drone delivery system to carry and drop small payloads.
+🛠️ Tools: ROS, Servo Motors
+📚 Concepts: Delivery Mechanism, Payload Control
+Difficulty Level: ⭐⭐⭐
+
+ 9️⃣ Voice-Activated Drone Control
+🎤 Project Statement: Control a drone using voice commands.
+🛠️ Tools: ROS, Google Speech API
+📚 Concepts: Speech Recognition, NLP Difficulty Level: ⭐⭐⭐
+
+🔟 Drone Formation Flying
+🛩️ Project Statement: Implement algorithms for coordinated flight of multiple drones.
+🛠️ Tools: ROS, Gazebo
+📚 Concepts: Multi-Agent Systems, Formation Control
+Difficulty Level: ⭐⭐
+
+(🚀 Full blog post with links to resources - https://lnkd.in/dwHpmQqM)
+
+Feel free to share, comment, or ask questions! 🌱🤖
+
+
+GZ_SIM_RESOURCE_PATH -> should point to the robot's meshes
+GZ_SIM_SYSTEM_PLUGIN_PATH -> should point to my plugins location

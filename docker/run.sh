@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # ========================================================================
 # Teensy-Flight-Controller Development Zephyr Docker Image Build Script
 # ========================================================================
@@ -10,10 +11,11 @@
 # sudo apt install terminator
 # sudo apt install xdotool
 
+
 set -e
 
-IMAGE_NAME="flight_controller-zephyr-dev"
-CONTAINER_NAME=$IMAGE_NAME
+IMAGE_NAME="zephyr-dev"
+CONTAINER_NAME="flight_controller-zephyr-dev"
 WORKSPACE_DIR="zephyr_ws"
 WORKSPACE_PATH="$PWD/$WORKSPACE_DIR"
 USER_NAME="jmendes"

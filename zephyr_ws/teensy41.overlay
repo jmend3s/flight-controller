@@ -9,23 +9,41 @@
 };
 
 / {
-    aliases
+	zephyr,user
 	{
-        spitest = &spidev0;
-    };
+		io-channels = <&adc1 7>;
+	};
 };
 
-&lpspi4
+&pinctrl
 {
-    status = "okay";
-	pinctrl-0 = <&pinmux_lpspi4>;
-    pinctrl-names = "default";
-
-	spidev0: spidev0@0
+	pinmux_adc1: pinmux_adc1
 	{
-		compatible = "vnd,spi-device";
-		reg = <0>;
-		spi-max-frequency = <1000000>;
-		status = "okay";
+		group0
+		{
+			pinmux = <&iomuxc_gpio_ad_b1_02_adc1_in7>;
+			bias-disable;
+			drive-strength = "r0-6";
+			slew-rate = "slow";
+			nxp,speed = "100-mhz";
+		};
+	};
+};
+
+&adc1
+{
+	status = "okay";
+	pinctrl-0 = <&pinmux_adc1>;
+	pinctrl-names = "default";
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	channel@7
+	{
+		reg = <7>;
+		zephyr,gain = "ADC_GAIN_1";
+		zephyr,reference = "ADC_REF_INTERNAL";
+		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
+		zephyr,resolution = <12>;
 	};
 };

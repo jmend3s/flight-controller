@@ -2,10 +2,13 @@
 #ifndef __APPLICATION_H__
 #define __APPLICATION_H__
 
+#include "../services/BatteryMonitoringService.h"
+
 #include "Component.h"
 #include "SystemTime.h"
 
-#include "../services/BatteryMonitoringService.h"
+#include "Adc.h"
+#include "Gpio.h"
 
 #include <cstdlib>
 
@@ -13,9 +16,10 @@
 class Application
 {
 public:
-    Application(AdcSpec adcSpec)
-        : _adcInstance(adcSpec)
-        , _batteryMonitoringService(_adcInstance)
+    Application(GpioSpec& led, AdcSpec& adc)
+        : _adc(adc)
+        , _led(led, Gpio::Mode::Output)
+        , _batteryMonitoringService(_adc, _led)
     {
         _components[0] = &_batteryMonitoringService;
     }
@@ -41,12 +45,15 @@ public:
     }
 
 private:
-    Adc _adcInstance;
+    Adc _adc;
+    Gpio _led;
+
     BatteryMonitoringService _batteryMonitoringService;
 
-    size_t _count = 1;
+    size_t const _count = 1;
     uint64_t _tickStorage[1];
     Component* _components[1];
+
     SystemTime _time;
 };
 

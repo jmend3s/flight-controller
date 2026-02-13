@@ -4,6 +4,7 @@
 
 #include "Component.h"
 #include "Adc.h"
+#include "Gpio.h"
 
 #include <cstdint>
 
@@ -11,7 +12,7 @@
 class BatteryMonitoringService : public Component
 {
 public:
-    BatteryMonitoringService(Adc& adc);
+    BatteryMonitoringService(Adc& adc, Gpio& led);
 
     void initialize() override;
     void update() override;
@@ -21,6 +22,7 @@ public:
 
 private:
     Adc& _adc;
+    Gpio& _led;
 };
 
 

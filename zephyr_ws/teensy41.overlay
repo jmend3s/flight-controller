@@ -47,3 +47,20 @@
 		zephyr,resolution = <12>;
 	};
 };
+
+/ {
+	aliases
+	{
+		led0 = &onboardLed;
+	};
+
+	leds
+	{
+		compatible = "gpio-leds";
+		onboardLed: onboardLed0
+		{
+			gpios = <&gpio2 3 GPIO_ACTIVE_LOW>;
+			label = "Onboard LED";
+		};
+	};
+};

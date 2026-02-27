@@ -14,18 +14,28 @@
 class BatteryMonitoringService : public Component
 {
 public:
-    BatteryMonitoringService(Adc& adc, Gpio& led);
+    enum class BatteryLevel { High, Low, Critical };
+
+    BatteryMonitoringService(Adc& adc, Gpio& greenLed, Gpio& yellowLed, Gpio& redLed);
 
     void initialize() override;
     void update() override;
     uint32_t period() const override;
 
-    uint32_t getReading() const;
-
 private:
+    void determineBatteryLevel(uint32_t millivolts);
+    void lightLed();
+
     BatterySensor _sensor;
 
-    Gpio& _led;
+    Gpio& _greenLed;
+    Gpio& _yellowLed;
+    Gpio& _redLed;
+
+    BatteryLevel _batteryLevel;
+
+    uint32_t const _lowMillivolts = 10800;
+    uint32_t const _criticalMillivolts = 9900;
 };
 
 

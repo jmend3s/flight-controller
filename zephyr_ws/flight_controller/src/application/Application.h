@@ -16,10 +16,12 @@
 class Application
 {
 public:
-    Application(GpioSpec& led, AdcSpec& adc)
+    Application(AdcSpec& adc, GpioSpec& greenLed, GpioSpec& yellowLed, GpioSpec& redLed)
         : _adc(adc)
-        , _led(led, Gpio::Mode::Output)
-        , _batteryMonitoringService(_adc, _led)
+        , _greenLed(greenLed, Gpio::Mode::Output)
+        , _yellowLed(yellowLed, Gpio::Mode::Output)
+        , _redLed(redLed, Gpio::Mode::Output)
+        , _batteryMonitoringService(_adc, _greenLed, _yellowLed, _redLed)
     {
         _components[0] = &_batteryMonitoringService;
     }
@@ -46,7 +48,9 @@ public:
 
 private:
     Adc _adc;
-    Gpio _led;
+    Gpio _greenLed;
+    Gpio _yellowLed;
+    Gpio _redLed;
 
     BatteryMonitoringService _batteryMonitoringService;
 

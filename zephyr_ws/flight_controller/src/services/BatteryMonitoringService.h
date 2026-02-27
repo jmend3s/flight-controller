@@ -2,6 +2,8 @@
 #ifndef __BATTERY_MONITORING_SERVICE_H__
 #define __BATTERY_MONITORING_SERVICE_H__
 
+#include "../components/BatterySensor.h"
+
 #include "Component.h"
 #include "Adc.h"
 #include "Gpio.h"
@@ -21,7 +23,8 @@ public:
     uint32_t getReading() const;
 
 private:
-    Adc& _adc;
+    BatterySensor _sensor;
+
     Gpio& _led;
 };
 

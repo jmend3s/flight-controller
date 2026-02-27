@@ -5,4 +5,5 @@ target_sources(app
 )
 
 add_subdirectory(application)
+add_subdirectory(components)
 add_subdirectory(services)

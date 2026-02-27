@@ -5,31 +5,22 @@
 
 
 BatteryMonitoringService::BatteryMonitoringService(Adc& adc, Gpio& led)
-    : _adc(adc)
+    : _sensor(adc)
     , _led(led)
 {
 }
 
 void BatteryMonitoringService::initialize()
 {
-    _adc.initialize();
+    _sensor.initialize();
     _led.configure();
     SystemPrint::print("Battery monitoring service initialized\n");
 }
 
 void BatteryMonitoringService::update()
 {
-    _adc.read();
-    SystemPrint::print("Last reading: %i\n", _adc.lastReading());
-    if (_adc.lastReading() < 1000)
-    {
-        SystemPrint::print("HIGH\n");
-        _led.set(Gpio::State::Low);
-    }
-    else
-    {
-        _led.set(Gpio::State::High);
-    }
+    auto const batteryLevel = _sensor.readMillivolts();
+    SystemPrint::print("Last reading: %u mV\n", batteryLevel);
 }
 
 uint32_t BatteryMonitoringService::period() const

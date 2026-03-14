@@ -2,22 +2,24 @@
 #ifndef __ESC_DRIVER_H__
 #define __ESC_DRIVER_H__
 
+#include "Component.h"
 #include "Pwm.h"
 
 
-class EscDriver
+class EscDriver : public Component
 {
 public:
     enum class State { Disarmed, Arming, Armed };
 
     EscDriver(Pwm& pwm);
 
-    void initialize();
-    void update();
+    void initialize() override;
+    void update() override;
+    uint32_t period() const override;
     void arm();
     void disarm();
-    void setThrottle(float normalized);
-    bool isArmed();
+    void setThrottle(float value);
+    bool isArmed() const;
 
 private:
     Pwm& _pwm;

@@ -2,12 +2,12 @@
 #ifndef __BATTERY_MONITORING_SERVICE_H__
 #define __BATTERY_MONITORING_SERVICE_H__
 
-#include "../components/BatterySensor.h"
-#include "../components/LowPassFilter.h"
+#include "BatteryState.h"
+#include "../modules/BatterySensor.h"
+#include "../modules/LowPassFilter.h"
 
 #include "Component.h"
 #include "Adc.h"
-#include "Gpio.h"
 
 #include <cstdint>
 
@@ -15,9 +15,7 @@
 class BatteryMonitoringService : public Component
 {
 public:
-    enum class BatteryLevel { Normal, Warning, Critical };
-
-    BatteryMonitoringService(Adc& adc, Gpio& greenLed, Gpio& yellowLed, Gpio& redLed);
+    BatteryMonitoringService(IAdc& adc, BatteryState& state);
 
     void initialize() override;
     void update() override;
@@ -27,14 +25,10 @@ public:
 
 private:
     void determineBatteryLevel(uint32_t millivolts);
-    void lightLed(); // Needs to get out
 
     BatterySensor _sensor;
+    BatteryState& _state;
     LowPassFilter _filter;
-
-    Gpio& _greenLed;
-    Gpio& _yellowLed;
-    Gpio& _redLed;
 
     BatteryLevel _batteryLevel = BatteryLevel::Normal;
 
@@ -45,9 +39,7 @@ private:
     static constexpr uint64_t _criticalDebounceSeconds = 2;
 
     static constexpr uint32_t _warningEnter = 10800;
-    static constexpr uint32_t _warningExit = 11000;
     static constexpr uint32_t _criticalEnter = 9900;
-    static constexpr uint32_t _criticalExit = 10200;
 };
 
 

@@ -1,7 +1,7 @@
 
 #include "EscDriver.h"
 
-EscDriver::EscDriver(Pwm& pwm)
+EscDriver::EscDriver(IPwm& pwm)
     : _pwm(pwm)
 {
 }

@@ -1,24 +1,19 @@
 
 #include "BatteryMonitoringService.h"
 
-#include "SystemPrint.h"
+#include "Printer.h"
 
 
-BatteryMonitoringService::BatteryMonitoringService(Adc& adc, Gpio& greenLed, Gpio& yellowLed, Gpio& redLed)
+BatteryMonitoringService::BatteryMonitoringService(IAdc& adc, BatteryState& state)
     : _sensor(adc)
-    , _greenLed(greenLed)
-    , _yellowLed(yellowLed)
-    , _redLed(redLed)
+    , _state(state)
 {
 }
 
 void BatteryMonitoringService::initialize()
 {
     _sensor.initialize();
-    _greenLed.configure();
-    _yellowLed.configure();
-    _redLed.configure();
-    SystemPrint::print("Battery monitoring service initialized\n");
+    _state.level = _batteryLevel;
 }
 
 void BatteryMonitoringService::update()
@@ -27,9 +22,9 @@ void BatteryMonitoringService::update()
     auto const filtered = _filter.filter(raw);
 
     determineBatteryLevel(filtered);
-    lightLed();
 
-    SystemPrint::print("Last reading: %u mV\n", _sensor.readMillivolts());
+    _state.voltage = filtered;
+    _state.level = _batteryLevel;
 }
 
 uint32_t BatteryMonitoringService::period() const
@@ -37,7 +32,7 @@ uint32_t BatteryMonitoringService::period() const
     return 10000;
 }
 
-BatteryMonitoringService::BatteryLevel BatteryMonitoringService::batteryLevel() const
+BatteryLevel BatteryMonitoringService::batteryLevel() const
 {
     return _batteryLevel;
 }
@@ -56,12 +51,12 @@ void BatteryMonitoringService::determineBatteryLevel(uint32_t const millivolts)
                     _batteryLevel = BatteryLevel::Warning;
                     _warningCounter = 0;
                 }
-                else
-                {
-                    _warningCounter = 0;
-                }
             }
-                break;
+            else
+            {
+                _warningCounter = 0;
+            }
+            break;
         }
         case BatteryLevel::Warning:
         {
@@ -76,48 +71,14 @@ void BatteryMonitoringService::determineBatteryLevel(uint32_t const millivolts)
             }
             else
             {
-                if (millivolts > _warningExit)
-                {
-                    _batteryLevel = BatteryLevel::Normal;
-                    _warningCounter = 0;
-                }
-                else
-                {
-                    _criticalCounter = 0;
-                }
+                _criticalCounter = 0;
             }
             break;
         }
         case BatteryLevel::Critical:
         {
-            if (millivolts < _criticalExit)
-            {
-                _batteryLevel = BatteryLevel::Warning;
-            }
-            break;
+             break;
         }
 
-    }
-}
-
-void BatteryMonitoringService::lightLed()
-{
-    switch (_batteryLevel)
-    {
-        case BatteryLevel::Normal:
-            _greenLed.set(Gpio::State::High);
-            _yellowLed.set(Gpio::State::Low);
-            _redLed.set(Gpio::State::Low);
-            break;
-        case BatteryLevel::Warning:
-            _greenLed.set(Gpio::State::Low);
-            _yellowLed.set(Gpio::State::High);
-            _redLed.set(Gpio::State::Low);
-            break;
-        case BatteryLevel::Critical:
-            _greenLed.set(Gpio::State::Low);
-            _yellowLed.set(Gpio::State::Low);
-            _redLed.set(Gpio::State::High);
-            break;
     }
 }

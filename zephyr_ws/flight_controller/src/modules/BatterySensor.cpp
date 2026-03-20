@@ -2,7 +2,7 @@
 #include "BatterySensor.h"
 
 
-BatterySensor::BatterySensor(Adc& adc)
+BatterySensor::BatterySensor(IAdc& adc)
     : _adc(adc)
 {
 }

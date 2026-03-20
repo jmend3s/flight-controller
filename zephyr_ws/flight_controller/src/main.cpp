@@ -1,6 +1,6 @@
 
-#include "System.h"
-#include "SystemTime.h"
+#include "../../corekit/runtime/System.h"
+#include "../../corekit/time/TimeSource.h"
 #include "Gpio.h"
 
 #include "application/Application.h"

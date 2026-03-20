@@ -3,10 +3,10 @@
 #define __APPLICATION_H__
 
 #include "../services/BatteryMonitoringService.h"
-#include "../components/EscDriver.h"
+#include "../modules/EscDriver.h"
 
 #include "Component.h"
-#include "SystemTime.h"
+#include "TimeSource.h"
 
 #include "Adc.h"
 #include "Gpio.h"
@@ -14,21 +14,24 @@
 
 #include <cstdlib>
 
+#include "../services/BatteryLedService.h"
 
 class Application
 {
 public:
     Application(AdcSpec& adc, GpioSpec& greenLed, GpioSpec& yellowLed, GpioSpec& redLed, PwmSpec& esc1)
         : _adc(adc)
-        , _greenLed(greenLed, Gpio::Mode::Output)
-        , _yellowLed(yellowLed, Gpio::Mode::Output)
-        , _redLed(redLed, Gpio::Mode::Output)
+        , _greenLed(greenLed, GpioMode::Output)
+        , _yellowLed(yellowLed, GpioMode::Output)
+        , _redLed(redLed, GpioMode::Output)
         , _esc1(esc1)
-        , _batteryMonitoringService(_adc, _greenLed, _yellowLed, _redLed)
+        , _batteryMonitoringService(_adc, _state)
+        , _batteryLedService(_greenLed, _yellowLed, _redLed, _state)
         , _escDriver(_esc1)
     {
         _components[0] = &_batteryMonitoringService;
-        _components[1] = &_escDriver;
+        _components[1] = &_batteryLedService;
+        _components[2] = &_escDriver;
     }
 
     Component** components()
@@ -46,7 +49,7 @@ public:
         return _count;
     }
 
-    SystemTime& time()
+    TimeSource& time()
     {
         return _time;
     }
@@ -59,13 +62,16 @@ private:
     Pwm _esc1;
 
     BatteryMonitoringService _batteryMonitoringService;
+    BatteryLedService _batteryLedService;
+    BatteryState _state;
+
     EscDriver _escDriver;
 
-    size_t const _count = 2;
-    uint64_t _tickStorage[2];
-    Component* _components[2];
+    size_t const _count = 3;
+    uint64_t _tickStorage[3];
+    Component* _components[3];
 
-    SystemTime _time;
+    TimeSource _time;
 };
 
 

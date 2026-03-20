@@ -8,7 +8,7 @@
 class BatterySensor
 {
 public:
-    BatterySensor(Adc& adc);
+    BatterySensor(IAdc& adc);
 
     void initialize();
 
@@ -17,7 +17,7 @@ public:
 private:
     uint32_t getVoltage();
 
-    Adc& _adc;
+    IAdc& _adc;
 
     float const _scale = 0.003566f;
 };

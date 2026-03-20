@@ -4,5 +4,4 @@ target_sources(app
         BatterySensor.cpp
         EscDriver.cpp
         LowPassFilter.cpp
-        Map.cpp
 )

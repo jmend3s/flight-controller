@@ -11,7 +11,7 @@ class EscDriver : public Component
 public:
     enum class State { Disarmed, Arming, Armed };
 
-    EscDriver(Pwm& pwm);
+    EscDriver(IPwm& pwm);
 
     void initialize() override;
     void update() override;
@@ -22,7 +22,7 @@ public:
     bool isArmed() const;
 
 private:
-    Pwm& _pwm;
+    IPwm& _pwm;
 
     static uint16_t constexpr _minPulse = 1000;
     static uint16_t constexpr _maxPulse = 2000;

@@ -4,7 +4,7 @@
 
 #include "Component.h"
 #include "IGpio.h"
-#include "BatteryMonitoringService.h"
+#include "../../../corekit/services/BatteryMonitoringService.h"
 
 
 class BatteryLedService : public Component

@@ -2,8 +2,9 @@
 #ifndef __APPLICATION_H__
 #define __APPLICATION_H__
 
-#include "../services/BatteryMonitoringService.h"
-#include "../modules/EscDriver.h"
+#include "BatteryMonitoringService.h"
+#include "BatteryLedService.h"
+#include "EscDriver.h"
 
 #include "Component.h"
 #include "TimeSource.h"
@@ -14,7 +15,6 @@
 
 #include <cstdlib>
 
-#include "../services/BatteryLedService.h"
 
 class Application
 {
